@@ -1,0 +1,10 @@
+streamlit
+pandas
+gspread
+oauth2client
+geopy
+folium
+streamlit-folium
+requests
+reportlab
+openpyxl
