@@ -124,13 +124,21 @@ SPREADSHEET_ID = "1OC2vYAswbiHM3Tr8Clnjvwt3GFnGsP0WXQplmuisFL0"
 # =====================================================
 @st.cache_resource
 def connect_sheet():
-    print(st.secrets["gcp_service_account"].keys())
-    print(st.secrets["gcp_service_account"]["private_key"][:50])
+    info = dict(st.secrets["gcp_service_account"])
+
+    # Pastikan \n pada Secrets menjadi newline
+    info["private_key"] = info["private_key"].replace("\\n", "\n").strip()
+
+    # Debug TANPA menampilkan private key
+    print("Private key mulai:", repr(info["private_key"][:30]))
+    print("Private key berakhir:", repr(info["private_key"][-30:]))
+    print("Panjang private key:", len(info["private_key"]))
+
     creds = ServiceAccountCredentials.from_json_keyfile_dict(
-        st.secrets["gcp_service_account"],
+        info,
         scope
     )
-    
+
     return gspread.authorize(creds)
 
 client = connect_sheet()
